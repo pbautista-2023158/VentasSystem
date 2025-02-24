@@ -1,5 +1,6 @@
 //Gestionar un perfil existente de usuario
 import User from "../user/user.model.js";
+import { encrypt } from '../../utils/encryp.js'
 
 export const getAll = async(req,res)=>{
     try{
@@ -153,26 +154,27 @@ export const updateProfilePicture = async(req, res)=>{
 }
 
 const agregarUsuarioAutomaticamente = async () => {
-    const usuariosExistentes = await User.countDocuments()
-    if(usuariosExistentes === 0) {
-        const usuarioPorDefecto = [
-            {
-                name: "Pedro Sergio Javier",
-                surname: "Bautista Matheu",
-                username: "usuariodefault",
-                email: "correoinstitucional@kinal.edu.gt",
-                password: "Contrasenia!",
-                phone: "4967-0135",
-                role: "ADMIN",
-                profilePicture: null
-            }
-        ]
-        try{
-            await User.insertMany(usuarioPorDefecto)
-            console.log("Default user added")
-        }catch(error){
-            console.error("General error when adding the default user", error)
+    try{
+        const adminExistente = await User.findOne({ role: "ADMIN" })
+        if (!adminExistente) {
+            const passwordEncrypt = await encrypt("Contraseña123*", 13)
+            const usuarioPorDefecto = new User( 
+                {
+                    name: "Pedro Sergio Javier",
+                    surname: "Bautista Matheu",
+                    username: "usuariodefault",
+                    email: "correoinstitucional@kinal.edu.gt",
+                    password: passwordEncrypt,
+                    phone: "4967-0135",
+                    role: "ADMIN",
+                    profilePicture: null
+                }
+            )
+            await usuarioPorDefecto.save()
+            console.log("Default admin added")
         }
+    }catch(error){
+        console.error("General error when adding the default user", err)
     }
 }
 
