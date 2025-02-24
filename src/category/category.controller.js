@@ -135,7 +135,7 @@ export const updateCategory = async(req, res) => {
 export const deleteCategory = async(req, res) => {
     try{
         let { id } = req.params
-        let deleteCategory = await Category.findByIdAndDelete(id)
+        let deleteCategory = await Category.findById(id)
         if(!deleteCategory.length === 0){
             return res.status(404).send(
                 {
@@ -144,11 +144,15 @@ export const deleteCategory = async(req, res) => {
                 }
             )
         }
+
+        deleteCategory.name = 'Categoria'
+        deleteCategory.description = '-'
+        await deleteCategory.save()
+
         return res.send(
             {
                 success: true,
-                message: 'Category deleted',
-                deleteCategory
+                message: 'Category deleted'
             }
         )  
     }catch (err){

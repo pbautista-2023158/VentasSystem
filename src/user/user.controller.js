@@ -2,7 +2,7 @@
 import User from "../user/user.model.js";
 import { encrypt } from '../../utils/encryp.js'
 
-export const getAll = async(req,res)=>{
+export const getUsers = async(req,res)=>{
     try{
         const { limit = 5, skip = 0} = req.query
         const users = await User.find()
@@ -30,7 +30,7 @@ export const getAll = async(req,res)=>{
     }
 }
 
-export const getId = async(req, res)=>{
+export const getUserById = async(req, res)=>{
     try{
         let { id } = req.params
         let user = await User.findById(id)
@@ -59,7 +59,7 @@ export const getId = async(req, res)=>{
     }
 }
 
-export const updateId = async(req, res)=>{
+export const updateUser = async(req, res)=>{
     try{
         const { id } = req.params
         const data = req.body
@@ -94,7 +94,7 @@ export const updateId = async(req, res)=>{
     }   
 } 
 
-export const deleteId = async(req, res)=>{
+export const deleteUser = async(req, res)=>{
     try{
         let { id } = req.params
         let deleteId = await User.findByIdAndDelete(id)
@@ -115,6 +115,51 @@ export const deleteId = async(req, res)=>{
         console.error(e)
         return res.status(500).send({message: 'General error', err})
     }    
+}
+
+//Actualizar la contraseña del usuario
+export const updatePassword = async(req, res) => {
+    try{
+        let { id } = req.params
+        let { newPassword } = req.body
+
+      if(!newPassword) return res.status(400).send(
+            {
+                success: false, 
+                message: "New password is required" 
+            }
+        )   
+      
+        let hashedPassword = await encrypt(newPassword)
+        let user = await User.findByIdAndUpdate(
+            id,
+            { password: hashedPassword },
+            { new: true }
+        )
+  
+        if(!user) return res.status(404).send(
+            { 
+                success: false,
+                message: "User not found" 
+            }
+        )
+
+        return res.send(
+            {
+                success: true,
+                message: 'Password updated successfully'
+            }
+        )
+    }catch (err){
+        console.error('General error', err)
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error',
+                err
+            }
+        )
+    }
 }
 
 export const updateProfilePicture = async(req, res)=>{
@@ -153,7 +198,7 @@ export const updateProfilePicture = async(req, res)=>{
     }
 }
 
-const agregarUsuarioAutomaticamente = async () => {
+const addUserAutomatically = async () => {
     try{
         const adminExistente = await User.findOne({ role: "ADMIN" })
         if (!adminExistente) {
@@ -178,4 +223,4 @@ const agregarUsuarioAutomaticamente = async () => {
     }
 }
 
-agregarUsuarioAutomaticamente()
+addUserAutomatically()
