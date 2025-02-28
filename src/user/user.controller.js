@@ -207,7 +207,7 @@ const addUserAutomatically = async () => {
                 {
                     name: "Pedro Sergio Javier",
                     surname: "Bautista Matheu",
-                    username: "usuariodefault",
+                    username: "admindefault",
                     email: "correoinstitucional@kinal.edu.gt",
                     password: passwordEncrypt,
                     phone: "4967-0135",
