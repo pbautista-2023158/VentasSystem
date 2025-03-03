@@ -46,37 +46,39 @@ export const createCart = async(req, res) => {
 export const addProducts = async(req, res) => {
     try{
         let { id } = req.params
-        let { products } = req.body
+        let product = req.body
+        let productExist = await Product.findById(product)
 
-        const productExists = await Product.findById(products)
-        if(!productExists) {
+        if(!productExist) {
             return res.status(403).send(
                 {
                     success: false,
-                    message: 'User id not found'
+                    message: 'Product id not found'
                 }
             )
         }
 
-        let addProduct = await Cart.findByIdAndUpdate(
+        let addProducts = await Cart.findByIdAndUpdate(
             id,
-            products
+            { $push: { product: product } },  // Utilizamos $push para agregar el producto al array
+            { new: true }
         )
 
-        if(!addProduct){
+        if(!addProducts) {
             return res.status(404).send(
                 {
-                    success: false,
-                    message: 'Product not found'
+                    sucess: false,
+                    message: 'Cart not found'
                 }
             )
         }
         return res.send(
             {
                 success: true,
-                message: 'Your product has been added'
+                message: 'Product/s added',
+                addProducts
             }
-        )        
+        )
     }catch(err){
         console.error(err)
         return res.status(500).send(

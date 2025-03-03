@@ -167,41 +167,6 @@ export const deleteCategory = async(req, res) => {
     }
 }
 
-export const getProductByCategory = async(req, res) => {
-    try{
-        let { name, limit = 10, skip = 0 } = req.params
-        let categories = await Category.find({category: {$regex: name, $options: 'i'}})
-        .skip(skip)
-        .limit(limit)      
-        
-        if(!categories){
-            return res.status(404).send(
-                {
-                    success: false,
-                    message: 'Product not found'
-                }
-            )         
-        }
-        return res.send(
-            {
-                success: true,
-                message: 'Product found',
-                similar_results: categories.length,
-                categories
-            }
-        )        
-    }catch(err){
-        console.error(err)
-        return res.status(500).send(
-            {
-                success: false,
-                message: 'General error when found product',
-                err
-            }
-        )
-    }
-}
-
 //Agregar categoria por defecto
 const categoriaPorDefecto = async() => {
     try{

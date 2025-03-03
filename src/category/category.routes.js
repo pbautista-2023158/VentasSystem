@@ -6,7 +6,6 @@ import {
     deleteCategory, 
     getCategories, 
     getCategoryById, 
-    getProductByCategory, 
     updateCategory } 
 from './category.controller.js'
 import { saveCategoryValidator, updateCategoryValidator } from '../../middlewares/validators.js'
@@ -18,6 +17,5 @@ api.get('/', validateJwt, getCategories)
 api.get('/:id', validateJwt, getCategoryById)
 api.put('/:id', [validateJwt, isAdmin, updateCategoryValidator], updateCategory)
 api.delete('/:id', [validateJwt, isAdmin], deleteCategory)
-api.get('/category/:category', getProductByCategory)
 
 export default api

@@ -8,16 +8,17 @@ const cartSchema = Schema(
             ref: 'User',
             required: [true, 'User is required']            
         },
-        products: [{
+        product: [{
             type: Schema.Types.ObjectId,
             ref: 'Product'
         }],
         total: {
-            type: Number
+            type: Number,
+            default: 0
         },
         status: {
             type: Boolean,
-            default: true
+            default: false
         }
     },
     {
