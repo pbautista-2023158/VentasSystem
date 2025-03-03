@@ -1,3 +1,4 @@
+//Modelo de la categoria
 import { Schema, model } from 'mongoose'
 
 const categorySchema = Schema(

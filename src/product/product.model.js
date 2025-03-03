@@ -1,3 +1,4 @@
+//Modelo de producto
 import { Schema, model } from 'mongoose'
 
 const productSchema = Schema(

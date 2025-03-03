@@ -1,3 +1,4 @@
+//Controlador de producto
 'use strict'
 
 import Category from '../category/category.model.js'
@@ -5,9 +6,9 @@ import Product from './product.model.js'
 
 //Crear un producto
 export const createProduct = async(req, res) => {
-    const data = req.body
     try{
-        const category = await Category.findOne(
+        let data = req.body
+        let category = await Category.findOne(
             {
                 _id: data.category
             }
@@ -20,7 +21,7 @@ export const createProduct = async(req, res) => {
             }
         )
 
-        const product = new Product(data)
+        let product = new Product(data)
         await product.save()
         return res.send(
             {
@@ -28,7 +29,7 @@ export const createProduct = async(req, res) => {
                 message: `${product.name} saved successfully`
             }
         )
-    }catch (err){
+    }catch(err){
         console.error(err)
         return res.status(500).send(
             {
@@ -42,9 +43,9 @@ export const createProduct = async(req, res) => {
 
 //Obtener todos los productos
 export const getProducts = async(req, res) => {
-    const { limit, skip } = req.query
     try{
-        const products = await Product.find()
+        let { limit = 10, skip = 0 } = req.query
+        let products = await Product.find()
             .populate(
                 {
                     path: 'category',
@@ -54,7 +55,7 @@ export const getProducts = async(req, res) => {
             .skip(skip)
             .limit(limit)
         
-            if(products.length === 0){
+            if(!products) {
                 return res.status(404).send(
                     {
                         success: false,
@@ -70,7 +71,7 @@ export const getProducts = async(req, res) => {
                     products
                 }
             )         
-    }catch (err){
+    }catch(err){
         console.error(err)
         return res.status(500).send(
             {
@@ -84,19 +85,16 @@ export const getProducts = async(req, res) => {
 
 //Obtener un producto por Id
 export const getProductById = async(req, res) => {
-    const { limit, skip } = req.query
     try{
-        const product = await Product.findById(req.params.id)
+        let product = await Product.findById(req.params.id)
             .populate(
                 {
                     path: 'category',
                     select: 'name -_id'
                 }
             )
-            .skip(skip)
-            .limit(limit)
 
-            if(product.length === 0){
+            if(!product){
                 return res.status(404).send(
                     {
                         success: false,
@@ -112,7 +110,7 @@ export const getProductById = async(req, res) => {
                     product
                 }
             )              
-    }catch (err){
+    }catch(err){
         console.error(err)
         return res.status(500).send(
             {
@@ -127,15 +125,15 @@ export const getProductById = async(req, res) => {
 //Actualizar un producto
 export const updateProduct = async(req, res) =>{
     try{
-        const { id } = req.params
-        const data = req.body
-        const updateProduct = await Product.findByIdAndUpdate(
+        let { id } = req.params
+        let data = req.body
+        let updateProduct = await Product.findByIdAndUpdate(
             id, 
             data, 
             {new: true}
         )      
 
-        if(!updateProduct.length === 0){
+        if(!updateProduct) {
             return res.status(404).send(
                 {
                     success: false,
@@ -150,7 +148,7 @@ export const updateProduct = async(req, res) =>{
                 updateProduct
             }
         )           
-    }catch (err){
+    }catch(err){
         console.error(err)
         return res.status(500).send(
             {
@@ -167,7 +165,7 @@ export const deleteProduct = async(req, res) => {
     try{
         let { id } = req.params
         let deleteProduct = await Product.findByIdAndDelete(id)
-        if(!deleteProduct.length === 0){
+        if(!deleteProduct) {
             return res.status(404).send(
                 {
                     success: false,
@@ -193,3 +191,54 @@ export const deleteProduct = async(req, res) => {
         )
     }
 }
+
+export const productByPopularity = async(req, res) => {
+    try{
+        
+    }catch(err){
+        console.error(err)
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error when found categories',
+                err
+            }
+        )
+    }
+}
+
+export const getProductByName = async(req, res) => {
+    try{
+        let { name, limit = 10, skip = 0 } = req.params
+        let product = await Product.find({name: {$regex: name, $options: 'i'}})
+        .skip(skip)
+        .limit(limit)      
+        
+        if(!product){
+            return res.status(404).send(
+                {
+                    success: false,
+                    message: 'Product not found'
+                }
+            )         
+        }
+        return res.send(
+            {
+                success: true,
+                message: 'Product found',
+                similar_results: product.length,
+                product
+            }
+        )        
+    }catch(err){
+        console.error(err)
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error when found product',
+                err
+            }
+        )
+    }
+}
+

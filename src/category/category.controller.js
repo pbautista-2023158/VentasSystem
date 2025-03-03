@@ -1,3 +1,4 @@
+//Controlador de la categoria
 'use strict'
 
 import Category from './category.model.js'
@@ -5,8 +6,8 @@ import Category from './category.model.js'
 //Crear una categoria
 export const createCategory = async(req, res) => {
     try{
-        const data = req.body
-        const category = new Category(data)
+        let data = req.body
+        let category = new Category(data)
         await category.save()
         return res.send(
             {
@@ -14,7 +15,7 @@ export const createCategory = async(req, res) => {
                 message: `${category.name} saved successfully`
             }
         )
-    }catch (err){
+    }catch(err){
         console.error(err)
         return res.status(500).send(
             {
@@ -29,12 +30,12 @@ export const createCategory = async(req, res) => {
 //Obtener todas las categorias
 export const getCategories = async(req, res) => {
     try{
-        const { limit = 5, skip = 0 } = req.query
-        const categories = await Category.find()
+        let { limit = 10, skip = 0 } = req.query
+        let categories = await Category.find()
             .skip(skip)
             .limit(limit)
 
-        if(!categories.length === 0){
+        if(!categories) {
             return res.status(404).send(
                 {
                     success: false,
@@ -49,7 +50,7 @@ export const getCategories = async(req, res) => {
                 categories
             }
         )            
-    }catch (err){
+    }catch(err){
         console.error(err)
         return res.status(500).send(
             {
@@ -66,7 +67,7 @@ export const getCategoryById = async(req, res) => {
     try{
         let { id } = req.params
         let category = await Category.findById(id)
-        if(!category.length === 0){
+        if(!category) {
             return res.status(404).send(
                 {
                     success: false,
@@ -81,7 +82,7 @@ export const getCategoryById = async(req, res) => {
                 category
             }
         )         
-    }catch (err){
+    }catch(err){
         console.error(err)
         return res.status(500).send(
             {
@@ -96,15 +97,15 @@ export const getCategoryById = async(req, res) => {
 //Actualizar una categoria
 export const updateCategory = async(req, res) => {
     try{
-        const { id } = req.params
-        const data = req.body
-        const updateCategory = await Category.findByIdAndUpdate(
+        let { id } = req.params
+        let data = req.body
+        let updateCategory = await Category.findByIdAndUpdate(
             id,
             data,
             {new: true}
         )
         
-        if(!updateCategory.length === 0){
+        if(!updateCategory) {
             return res.status(404).send(
                 {
                     success: false,
@@ -119,7 +120,7 @@ export const updateCategory = async(req, res) => {
                 updateCategory
             }
         )  
-    }catch (err){
+    }catch(err){
         console.error(err)
         return res.status(500).send(
             {
@@ -136,7 +137,8 @@ export const deleteCategory = async(req, res) => {
     try{
         let { id } = req.params
         let deleteCategory = await Category.findById(id)
-        if(!deleteCategory.length === 0){
+
+        if(!deleteCategory) {
             return res.status(404).send(
                 {
                     success: false,
@@ -144,18 +146,16 @@ export const deleteCategory = async(req, res) => {
                 }
             )
         }
-
-        deleteCategory.name = 'Categoria'
+        deleteCategory.name = 'Category'
         deleteCategory.description = '-'
         await deleteCategory.save()
-
         return res.send(
             {
                 success: true,
                 message: 'Category deleted'
             }
         )  
-    }catch (err){
+    }catch(err){
         console.error(err)
         return res.status(500).send(
             {
@@ -167,22 +167,59 @@ export const deleteCategory = async(req, res) => {
     }
 }
 
-const agregarCategoriaAutomaticamente = async () => {
-    const categoriasExistentes = await Category.countDocuments()
-    if(categoriasExistentes === 0) {
-        const categoriaPorDefecto = [
-            {
-                name: "Productos de limpieza",
-                description: "Productos para el hogar"
-            }
-        ]
-        try{
-            await Category.insertMany(categoriaPorDefecto)
-            console.log("Default category added")
-        }catch(error){
-            console.error("General error when adding the default category", error)
+export const getProductByCategory = async(req, res) => {
+    try{
+        let { name, limit = 10, skip = 0 } = req.params
+        let categories = await Category.find({category: {$regex: name, $options: 'i'}})
+        .skip(skip)
+        .limit(limit)      
+        
+        if(!categories){
+            return res.status(404).send(
+                {
+                    success: false,
+                    message: 'Product not found'
+                }
+            )         
         }
+        return res.send(
+            {
+                success: true,
+                message: 'Product found',
+                similar_results: categories.length,
+                categories
+            }
+        )        
+    }catch(err){
+        console.error(err)
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error when found product',
+                err
+            }
+        )
     }
 }
 
-agregarCategoriaAutomaticamente()
+//Agregar categoria por defecto
+const categoriaPorDefecto = async() => {
+    try{
+        let categoriasExistentes = await Category.countDocuments()
+
+        if(!categoriasExistentes) {
+            let agregarCategoria = new Category(
+                {
+                    name: "Productos de limpieza",
+                    description: "Productos para el hogar"
+                }
+            )
+            await agregarCategoria.save()
+            console.log("Default category added")    
+        }
+    }catch(err){
+        console.error("General error when adding category", err)
+    }
+}
+
+categoriaPorDefecto()

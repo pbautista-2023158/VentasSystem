@@ -1,4 +1,4 @@
-//Rutas de autenticacion
+//Rutas de autenticación
 import { Router } from "express";
 import { login, register } from "./auth.controller.js"
 import { registerValidator } from "../../middlewares/validators.js";

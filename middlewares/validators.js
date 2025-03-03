@@ -1,9 +1,8 @@
-//Validar campos en las rutas
+//Validación de errores
 import { body } from "express-validator" 
 import { validateErrors, validateErrorsWithoutFiles } from "./validate.errors.js"
 import { existUsername, existEmail, notRequiredField} from "../utils/db.validators.js"
 
-//Arreglo de validaciones (por cada ruta)
 export const registerValidator = [
     body('name', 'Name cannot be empty')
         .notEmpty(),
@@ -29,15 +28,14 @@ export const registerValidator = [
     body('phone', 'Phone cannot be empty')
         .notEmpty()
         .isMobilePhone(),
-    validateErrors //Si lleva parentesis es una funcion en ejecucion y si no es una referencia a una funcion
+    validateErrors 
 ]
 
 export const updateUserValidator = [
     body('username')
-        .optional() //Parametro opcional, puede llegar como no puede llegar
+        .optional() 
         .notEmpty()
         .toLowerCase()
-        .custom()
         .custom((username, { req })=> existUsername(username, req.user)),
     body('email')
         .optional()

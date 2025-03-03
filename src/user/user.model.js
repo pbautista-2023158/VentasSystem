@@ -49,7 +49,7 @@ const userSchema = Schema(
     }
 )
 
-//Modificar el toJSON -> toObject para excluir datos en la respuesta
+//Excluir datos en la respuesta
 userSchema.methods.toJSON = function(){
     const { __v, password, ...user } = this.toObject() 
     return user

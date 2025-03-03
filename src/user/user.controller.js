@@ -1,15 +1,15 @@
-//Gestionar un perfil existente de usuario
+//Controlador del usuario
 import User from "../user/user.model.js";
 import { encrypt } from '../../utils/encryp.js'
 
-export const getUsers = async(req,res)=>{
+export const getUsers = async(req,res) => {
     try{
-        const { limit = 5, skip = 0} = req.query
-        const users = await User.find()
+        let { limit = 10, skip = 0 } = req.query
+        let users = await User.find()
             .skip(skip)
             .limit(limit)
 
-        if(!users.length === 0){
+        if(!users) {
             return res.status(404).send(
                 {
                     success: false,
@@ -24,9 +24,15 @@ export const getUsers = async(req,res)=>{
                 users
             }
         )
-    }catch(e){
-        console.error(e)
-        return res.status(500).send({message: 'General error', err})
+    }catch(err){
+        console.error(err)
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error when found users',
+                err
+            }
+        )
     }
 }
 
@@ -34,6 +40,7 @@ export const getUserById = async(req, res)=>{
     try{
         let { id } = req.params
         let user = await User.findById(id)
+
         if(!user) return res.status(404).send(
             {
                     success: false,
@@ -48,11 +55,11 @@ export const getUserById = async(req, res)=>{
             }
         )
     }catch(err){
-        console.error('General error', err)
+        console.error(err)
         return res.status(500).send(
             {
                 success: false,
-                message: 'General error',
+                message: 'General error when found user',
                 err
             }
         )
@@ -61,9 +68,9 @@ export const getUserById = async(req, res)=>{
 
 export const updateUser = async(req, res)=>{
     try{
-        const { id } = req.params
-        const data = req.body
-        const update = await User.findByIdAndUpdate(
+        let { id } = req.params
+        let data = req.body
+        let updateUser = await User.findByIdAndUpdate(
             id,
             data,
             {new: true}
@@ -79,15 +86,15 @@ export const updateUser = async(req, res)=>{
             {
                 success: true,
                 message: 'User updated',
-                user: update 
+                user: updateUser 
             }
         )
     }catch(err){
-        console.error('General error', err)
+        console.error(err)
         return res.status(500).send(
             {
                 success: false,
-                message: 'General error',
+                message: 'General error when update user',
                 err
             }
         )
@@ -97,8 +104,9 @@ export const updateUser = async(req, res)=>{
 export const deleteUser = async(req, res)=>{
     try{
         let { id } = req.params
-        let deleteId = await User.findByIdAndDelete(id)
-        if(!deleteId) return res.status(404).send(
+        let deleteUser = await User.findByIdAndDelete(id)
+
+        if(!deleteUser) return res.status(404).send(
             {
                 success: false,
                 message: 'User not found'
@@ -108,13 +116,19 @@ export const deleteUser = async(req, res)=>{
             {
                 success: true,
                 message: 'User deleted',
-                deleteId
+                deleteUser
             }
         )        
-    }catch(e){
-        console.error(e)
-        return res.status(500).send({message: 'General error', err})
-    }    
+    }catch(err){
+        console.error(err)
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error when delete user',
+                err
+            }
+        )
+    }  
 }
 
 //Actualizar la contraseña del usuario
@@ -123,7 +137,7 @@ export const updatePassword = async(req, res) => {
         let { id } = req.params
         let { newPassword } = req.body
 
-      if(!newPassword) return res.status(400).send(
+        if(!newPassword) return res.status(400).send(
             {
                 success: false, 
                 message: "New password is required" 
@@ -150,12 +164,12 @@ export const updatePassword = async(req, res) => {
                 message: 'Password updated successfully'
             }
         )
-    }catch (err){
-        console.error('General error', err)
+    }catch(err){
+        console.error(err)
         return res.status(500).send(
             {
                 success: false,
-                message: 'General error',
+                message: 'General error when update password',
                 err
             }
         )
@@ -173,6 +187,7 @@ export const updateProfilePicture = async(req, res)=>{
             },
             { new: true }
         )
+        
         if(!user) return res.status(404).send(
             {
                 succes: false,
@@ -187,23 +202,25 @@ export const updateProfilePicture = async(req, res)=>{
             }
         )
     }catch(err){
-        console.error('General error', err)
+        console.error(err)
         return res.status(500).send(
             {
                 success: false,
-                message: 'General error',
+                message: 'General error when update profile picture',
                 err
             }
         )
     }
 }
 
-const addUserAutomatically = async () => {
+//Agregar usuario por defecto
+const adminPorDefecto = async() => {
     try{
-        const adminExistente = await User.findOne({ role: "ADMIN" })
-        if (!adminExistente) {
-            const passwordEncrypt = await encrypt("Contraseña123*", 13)
-            const usuarioPorDefecto = new User( 
+        let adminExistente = await User.findOne({ role: "ADMIN" })
+        
+        if(!adminExistente) {
+            let passwordEncrypt = await encrypt("Contraseña123*", 13)
+            let adminPorDefecto = new User( 
                 {
                     name: "Pedro Sergio Javier",
                     surname: "Bautista Matheu",
@@ -215,12 +232,12 @@ const addUserAutomatically = async () => {
                     profilePicture: null
                 }
             )
-            await usuarioPorDefecto.save()
+            await adminPorDefecto.save()
             console.log("Default admin added")
         }
-    }catch(error){
-        console.error("General error when adding the default user", err)
+    }catch(err){
+        console.error("General error when adding the default admin", err)
     }
 }
 
-addUserAutomatically()
+adminPorDefecto()

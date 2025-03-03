@@ -33,8 +33,8 @@ export const login = async(req, res)=>{
         let user = await User.findOne(
             {
                 $or: [ //Subfuncion OR | espera un [] de busquedas
-                    {email: userLoggin}, 
-                    {username: userLoggin}
+                    { email: userLoggin }, 
+                    { username: userLoggin }
                 ]
             }
         )//{username} = {username: username}
