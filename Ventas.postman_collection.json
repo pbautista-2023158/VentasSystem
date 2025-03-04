@@ -7,130 +7,215 @@
 	},
 	"item": [
 		{
-			"name": "User",
+			"name": "ADMIN",
 			"item": [
 				{
-					"name": "Login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "userLoggin",
-									"value": "chuchislover",
-									"type": "text"
+					"name": "Category",
+					"item": [
+						{
+							"name": "postCategory",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Pastas y harinas",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "De trigo, integral, arroz, etc.",
+											"type": "text"
+										}
+									]
 								},
-								{
-									"key": "password",
-									"value": "Sarita250*",
-									"type": "text"
+								"url": {
+									"raw": "localhost:2636/v1/category",
+									"host": [
+										"localhost"
+									],
+									"port": "2636",
+									"path": [
+										"v1",
+										"category"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "localhost:2636/login",
-							"host": [
-								"localhost"
-							],
-							"port": "2636",
-							"path": [
-								"login"
-							]
+						{
+							"name": "getCategories",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:2636/v1/category",
+									"host": [
+										"localhost"
+									],
+									"port": "2636",
+									"path": [
+										"v1",
+										"category"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getCategoryById",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:2636/v1/category/67c50292258e332ff3df953c",
+									"host": [
+										"localhost"
+									],
+									"port": "2636",
+									"path": [
+										"v1",
+										"category",
+										"67c50292258e332ff3df953c"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateCategory",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "a",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:2636/v1/category/67bce4780e604e0f68197edd",
+									"host": [
+										"localhost"
+									],
+									"port": "2636",
+									"path": [
+										"v1",
+										"category",
+										"67bce4780e604e0f68197edd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteCategory",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "localhost:2636/v1/category/67c505676886fe3aad57a1aa",
+									"host": [
+										"localhost"
+									],
+									"port": "2636",
+									"path": [
+										"v1",
+										"category",
+										"67c505676886fe3aad57a1aa"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Registro",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "Sara Maria",
-									"type": "text"
-								},
-								{
-									"key": "surname",
-									"value": "Bautista Matheu",
-									"type": "text"
-								},
-								{
-									"key": "username",
-									"value": "chuchislover",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "saritachuchis2013@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "BreakingBad2013*",
-									"type": "text"
-								},
-								{
-									"key": "phone",
-									"value": "4117-5789",
-									"type": "text"
-								},
-								{
-									"key": "role",
-									"value": "",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "profilePicture",
-									"type": "file",
-									"src": [],
-									"disabled": true
+					"name": "Gets",
+					"item": [
+						{
+							"name": "getUsers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:2636/v1/user",
+									"host": [
+										"localhost"
+									],
+									"port": "2636",
+									"path": [
+										"v1",
+										"user"
+									]
 								}
-							]
-						},
-						"url": {
-							"raw": "localhost:2636/register",
-							"host": [
-								"localhost"
-							],
-							"port": "2636",
-							"path": [
-								"register"
-							]
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "getUsers",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:2636/v1/user",
-							"host": [
-								"localhost"
-							],
-							"port": "2636",
-							"path": [
-								"v1",
-								"user"
-							]
-						}
-					},
-					"response": []
-				},
+					]
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
 				{
 					"name": "getUserId",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "localhost:2636/v1/user/",
 							"host": [
@@ -153,7 +238,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2IyODMyMzA4Mjc3MjUxMTk0ODdjY2IiLCJ1c2VybmFtZSI6ImNodWNoaXNsb3ZlciIsIm5hbWUiOiJTYXJhIE1hcmlhIiwicm9sZSI6IkNMSUVOVCIsImlhdCI6MTczOTc1MjUxMiwiZXhwIjoxNzM5NzYzMzEyfQ.b24zv6LSKBPi5tuXStbcgUxf7wAioCWf1UDbSzvnZbk",
+								"value": "{{token}}",
 								"type": "text"
 							}
 						],
@@ -179,7 +264,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "",
+								"value": "{{token}}",
 								"type": "text"
 							}
 						],
@@ -220,7 +305,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "",
+								"value": "{{token}}",
 								"type": "text"
 							}
 						],
@@ -249,99 +334,15 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Category",
-			"item": [
-				{
-					"name": "postCategory",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "name",
-									"value": "Pastas y harinas",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "De trigo, integral, arroz, etc.",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "localhost:2636/v1/category",
-							"host": [
-								"localhost"
-							],
-							"port": "2636",
-							"path": [
-								"v1",
-								"category"
-							]
-						}
-					},
-					"response": []
 				},
 				{
-					"name": "getCategories",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:2636/v1/category",
-							"host": [
-								"localhost"
-							],
-							"port": "2636",
-							"path": [
-								"v1",
-								"category"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getCategoryById",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:2636/v1/category/",
-							"host": [
-								"localhost"
-							],
-							"port": "2636",
-							"path": [
-								"v1",
-								"category",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "updateCategory",
+					"name": "updatePassword",
 					"request": {
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "",
+								"value": "{{token}}",
 								"type": "text"
 							}
 						],
@@ -349,56 +350,27 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "name",
+									"key": "currentPassword",
 									"value": "",
 									"type": "text"
 								},
 								{
-									"key": "description",
-									"value": "",
+									"key": "newPassword",
+									"value": "SuperSecretPassword2025!",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost:2636/v1/category/67b298d383c1156a7cd103d7",
+							"raw": "localhost:2636/v1/user/updatePassword/",
 							"host": [
 								"localhost"
 							],
 							"port": "2636",
 							"path": [
 								"v1",
-								"category",
-								"67b298d383c1156a7cd103d7"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deleteCategory",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": []
-						},
-						"url": {
-							"raw": "localhost:2636/v1/category/",
-							"host": [
-								"localhost"
-							],
-							"port": "2636",
-							"path": [
-								"v1",
-								"category",
+								"user",
+								"updatePassword",
 								""
 							]
 						}
@@ -417,7 +389,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "",
+								"value": "{{token}}",
 								"type": "text"
 							}
 						],
@@ -475,7 +447,13 @@
 					"name": "getProducts",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "localhost:2636/v1/product",
 							"host": [
@@ -494,9 +472,15 @@
 					"name": "getProductById",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:2636/v1/product/",
+							"raw": "localhost:2636/v1/product/67c514a16886fe3aad57a1b7",
 							"host": [
 								"localhost"
 							],
@@ -504,7 +488,7 @@
 							"path": [
 								"v1",
 								"product",
-								""
+								"67c514a16886fe3aad57a1b7"
 							]
 						}
 					},
@@ -517,7 +501,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "",
+								"value": "{{token}}",
 								"type": "text"
 							}
 						],
@@ -543,7 +527,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "",
+								"value": "{{token}}",
 								"type": "text"
 							},
 							{
@@ -598,8 +582,236 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "getProductsByPopularity",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
+		},
+		{
+			"name": "Shopping",
+			"item": [
+				{
+					"name": "createCart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "user",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:2636/v1/cart/",
+							"host": [
+								"localhost"
+							],
+							"port": "2636",
+							"path": [
+								"v1",
+								"cart",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addProducts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "cart",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "product",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:2636/v1/cart/addProducts",
+							"host": [
+								"localhost"
+							],
+							"port": "2636",
+							"path": [
+								"v1",
+								"cart",
+								"addProducts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getProductByName",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:2636/v1/product/product_name/",
+							"host": [
+								"localhost"
+							],
+							"port": "2636",
+							"path": [
+								"v1",
+								"product",
+								"product_name",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Registro",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Sara Maria",
+							"type": "text"
+						},
+						{
+							"key": "surname",
+							"value": "Bautista Matheu",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "chuchislover",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "saritachuchis2013@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "BreakingBad2013*",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "4117-5789",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "profilePicture",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:2636/register",
+					"host": [
+						"localhost"
+					],
+					"port": "2636",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = JSON.parse(responseBody);\r",
+							"postman.setGlobalVariable(\"token\", data.token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "userLoggin",
+							"value": "admindefault",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Contraseña123*",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:2636/login",
+					"host": [
+						"localhost"
+					],
+					"port": "2636",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

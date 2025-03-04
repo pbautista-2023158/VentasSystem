@@ -18,6 +18,6 @@ api.get('/', validateJwt, getProducts)
 api.get('/:id', validateJwt, getProductById)
 api.put('/:id', [validateJwt, isAdmin], updateProduct)
 api.delete("/:id", [validateJwt, isAdmin], deleteProduct)
-api.get('/product_name/:name', getProductByName)
+api.get('/product_name/:name', validateJwt, getProductByName)
 
 export default api
